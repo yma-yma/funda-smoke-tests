@@ -17,7 +17,7 @@ export const SEARCH_TAB_IDS = {
   Europa: 'europe',
 } as const;
 
-export type searchTab = keyof typeof SEARCH_TAB_IDS;
+export type SearchTab = keyof typeof SEARCH_TAB_IDS;
 
 export const FEATURED_LISTING_COUNT = 3;
 

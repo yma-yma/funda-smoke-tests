@@ -1,7 +1,6 @@
-// src/fixture/base.ts
 import { test as base, expect } from '@playwright/test';
 import { HomePage } from '../pages/mainPage';
-import { SearchType } from '../routes';
+import type { SearchType } from '../routes';
 import { SearchResultsPage } from '../pages/searchResultsPage';
 import { ListingDetailPage } from '../pages/listingDetailPage';
 import { AgentContactPage } from '../pages/agentContactPage';
@@ -35,13 +34,12 @@ export const test = base.extend<{
   },
 
   listingDetail: async ({ page }, use) => {
-  await use(new ListingDetailPage(page));
-},
+    await use(new ListingDetailPage(page));
+  },
 
-agentContact: async ({ page }, use) => {
-  await use(new AgentContactPage(page));
-},
-
+  agentContact: async ({ page }, use) => {
+    await use(new AgentContactPage(page));
+  },
 });
 
 export { expect };

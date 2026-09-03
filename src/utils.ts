@@ -1,5 +1,3 @@
-import type { Page } from '@playwright/test';
-
 export function agentProfileId(href: string | null): string | null {
   return href?.match(/\/makelaar\/(\d+)/)?.[1] ?? null;
 }

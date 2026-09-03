@@ -10,14 +10,14 @@ export class AgentSection {
   readonly contactLink: Locator;
   readonly requestViewingLink: Locator;
 
-  constructor(locator: Locator) {
-    this.logoLink = locator.locator('section a[href*="/makelaar/"]');
+  constructor(root: Locator) {
+    this.logoLink = root.locator('section a[href*="/makelaar/"]');
     this.logo = this.logoLink.locator('img');
-    this.profileLink = locator.locator('h3 > a[href*="/makelaar/"]');
-    this.showPhoneNumberButton = locator.getByText('Toon telefoonnummer');
-    this.phoneLink = locator.locator('a[href^="tel:"]:not([data-optimizely="contact-phone"])');
-    this.contactLink = locator.locator('a[data-optimizely="contact-email"]');
-    this.requestViewingLink = locator.locator('a[data-optimizely="contact-request-viewing"]');
+    this.profileLink = root.locator('h3 > a[href*="/makelaar/"]');
+    this.showPhoneNumberButton = root.getByText('Toon telefoonnummer');
+    this.phoneLink = root.locator('a[href^="tel:"]:not([data-optimizely="contact-phone"])');
+    this.contactLink = root.locator('a[data-optimizely="contact-email"]');
+    this.requestViewingLink = root.locator('a[data-optimizely="contact-request-viewing"]');
   }
 
   async revealPhoneNumber(): Promise<void> {

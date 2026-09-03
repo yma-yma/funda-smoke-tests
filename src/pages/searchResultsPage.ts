@@ -35,17 +35,21 @@ export class SearchResultsPage {
     this.results = this.page.locator('#PageListings');
     this.pageHeader = this.results.getByTestId('pageHeader');
     this.searchInput = this.results.getByTestId('search-box');
-    this.filtersButton = this.results.getByTestId('QuickFiltersFilterButton').getByTestId('ButtonBarFilterButton');
+    this.filtersButton = this.results
+      .getByTestId('QuickFiltersFilterButton')
+      .getByTestId('ButtonBarFilterButton');
     this.sortButton = this.results.getByRole('combobox', { name: 'Sorteer' });
     this.mapViewLink = this.results.locator(`a[href^="/zoeken/kaart/${searchOption}"]`).first();
     this.pagination = this.results.getByTestId('pagination');
     this.nextPageLink = this.pagination.getByRole('link', { name: 'Volgende' });
     this.topPositionSection = this.results.getByTestId('top-position-wrapper');
     this.topPositionCards = this.results.getByTestId('top-position-listing');
-    this.resultCount = this.pageHeader.locator('div').first();   
-    this.resultCards = this.results.locator(`div:has(> h2 > a[data-testid="${RESULT_ADDRESS_TEST_ID}"])`);
+    this.resultCount = this.pageHeader.locator('div').first();
+    this.resultCards = this.results.locator(
+      `div:has(> h2 > a[data-testid="${RESULT_ADDRESS_TEST_ID}"])`,
+    );
     this.resultAddresses = this.results.getByTestId(RESULT_ADDRESS_TEST_ID);
-    this.agentCards = this.results.getByTestId('agent-card'); 
+    this.agentCards = this.results.getByTestId('agent-card');
   }
 
   async openSearchListResults(place: string): Promise<void> {
@@ -76,7 +80,8 @@ export class SearchResultsPage {
         const address = card.getByTestId(RESULT_ADDRESS_TEST_ID);
         const agentLink = card.locator(AGENT_LINK_SELECTOR);
         const prices = await card.getByText(/€/).allInnerTexts();
-        const price = prices.find((value) => PRICE_SUFFIX[this.searchOption].test(value)) ?? prices[0] ?? '';
+        const price =
+          prices.find((value) => PRICE_SUFFIX[this.searchOption].test(value)) ?? prices[0] ?? '';
 
         return {
           street: (await address.locator('span.truncate').innerText()).trim(),
@@ -94,7 +99,7 @@ export class SearchResultsPage {
     await test.step('Open the next page of results', async () => {
       const firstAddressBefore = await this.resultAddresses.first().innerText();
       await this.nextPageLink.click();
-      
+
       await expect(this.resultAddresses.first()).not.toHaveText(firstAddressBefore);
     });
   }
@@ -107,7 +112,7 @@ export class SearchResultsPage {
     });
   }
 
-     async openListingDetailPage(index = 0): Promise<void> {
+  async openListingDetailPage(index = 0): Promise<void> {
     await test.step(`Open the listing at position ${index}`, async () => {
       await this.resultCards.nth(index).getByTestId(RESULT_ADDRESS_TEST_ID).click();
       await this.page.waitForURL(/\/detail\//);

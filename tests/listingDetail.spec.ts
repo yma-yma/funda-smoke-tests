@@ -1,7 +1,7 @@
-import { test, expect } from '../src/fixture/base';
-import { ROUTES } from '../src/routes';
+import { expect, test } from '../src/fixture/base';
 import { SEARCH_SCENARIOS } from '../src/pages/types';
 import type { FeatureCategory } from '../src/pages/listingDetailPage';
+import type { SearchResultsPage } from '../src/pages/searchResultsPage';
 import { getPriceAmount } from '../src/utils';
 
 const CORE_FEATURE_CATEGORIES: FeatureCategory[] = [
@@ -15,13 +15,16 @@ const MIN_DESCRIPTION_LENGTH = 100;
 
 for (const { searchOption, place } of SEARCH_SCENARIOS) {
   test.describe(`Listing detail ${searchOption} / ${place}`, () => {
+    let results: SearchResultsPage;
+
+    test.beforeEach(async ({ searchResults }) => {
+      results = searchResults(searchOption);
+      await results.openSearchListResults(place);
+    });
+
     test('Result card and open listing page should have the same data', async ({
-      page,
-      searchResults,
       listingDetail,
     }) => {
-      const results = searchResults(searchOption);
-      await page.goto(ROUTES.search(searchOption, place));
       const card = await test.step('Read the first result card', async () =>
         (await results.getResultCardsContent())[1]);
       await results.openListingDetailPage(1);
@@ -43,13 +46,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
       ).toBe(cardPriceAmount);
     });
 
-    test('Listing data is present and correctly formatted', async ({
-      page,
-      searchResults,
-      listingDetail,
-    }) => {
-      const results = searchResults(searchOption);
-      await page.goto(ROUTES.search(searchOption, place));
+    test('Listing data is present and correctly formatted', async ({ listingDetail }) => {
       await results.openListingDetailPage(2);
 
       /* The searched area is a city name in one scenario and a postcode in the
@@ -89,13 +86,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
       ).toBeVisible();
     });
 
-    test('Media gallery and listing description should be loaded', async ({
-      page,
-      searchResults,
-      listingDetail,
-    }) => {
-      const results = searchResults(searchOption);
-      await page.goto(ROUTES.search(searchOption, place));
+    test('Media gallery and listing description should be loaded', async ({ listingDetail }) => {
       await results.openListingDetailPage(3);
 
       await expect(listingDetail.getMediaLink('fotos')).toBeVisible();
@@ -113,12 +104,8 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
     });
 
     test('The features section should list the core categories and repeats the header price', async ({
-      page,
-      searchResults,
       listingDetail,
     }) => {
-      const results = searchResults(searchOption);
-      await page.goto(ROUTES.search(searchOption, place));
       await results.openListingDetailPage(4);
 
       for (const category of CORE_FEATURE_CATEGORIES) {
@@ -151,13 +138,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
      * Deliberately left as a skipped test rather than deleted, so the gap is
      * visible rather than silently missing.
      */
-    test.skip('The comparable listings block should load', async ({
-      page,
-      searchResults,
-      listingDetail,
-    }) => {
-      const results = searchResults(searchOption);
-      await page.goto(ROUTES.search(searchOption, place));
+    test.skip('The comparable listings block should load', async ({ page, listingDetail }) => {
       await results.openListingDetailPage(5);
 
       await page.keyboard.press('End');

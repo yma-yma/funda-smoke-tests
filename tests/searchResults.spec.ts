@@ -1,15 +1,20 @@
 import { expect, test } from '../src/fixture/base';
 import { SEARCH_SCENARIOS } from '../src/pages/types';
+import type { SearchResultsPage } from '../src/pages/searchResultsPage';
 
 const COMBINED_LISTING_SEGMENT = 'koophuur';
 
 for (const { searchOption, place } of SEARCH_SCENARIOS) {
   test.describe(`Search results ${searchOption} in ${place}`, () => {
     test.describe('List view', () => {
-      test('Should return a non-empty set of results', async ({ searchResults }) => {
-        const results = searchResults(searchOption);
-        await results.openSearchListResults(place);
+      let results: SearchResultsPage;
 
+      test.beforeEach(async ({ searchResults }) => {
+        results = searchResults(searchOption);
+        await results.openSearchListResults(place);
+      });
+
+      test('Should return a non-empty set of results', async () => {
         const count = await results.getResultCount();
 
         expect(count, 'Result count should be present and parseable').not.toBeNull();
@@ -33,21 +38,13 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
         }
       });
 
-      test('Should offer the controls needed to refine the search', async ({ searchResults }) => {
-        const results = searchResults(searchOption);
-        await results.openSearchListResults(place);
-
+      test('Should offer the controls needed to refine the search', async () => {
         await expect(results.filtersButton, 'Filters button should be visible').toBeVisible();
         await expect(results.sortButton, 'Sort control should be visible').toBeVisible();
         await expect(results.mapViewLink, 'Map view link should be visible').toBeVisible();
       });
 
-      test('Should display proper address, price, and agent information on every card', async ({
-        searchResults,
-      }) => {
-        const results = searchResults(searchOption);
-        await results.openSearchListResults(place);
-
+      test('Should display proper address, price, and agent information on every card', async () => {
         const content = await results.getResultCardsContent();
 
         expect(content.length, 'Should be cards listing to check').toBeGreaterThan(0);
@@ -76,12 +73,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
         });
       });
 
-      test('Should render the "Toppositie" placement alongside results', async ({
-        searchResults,
-      }) => {
-        const results = searchResults(searchOption);
-        await results.openSearchListResults(place);
-
+      test('Should render the "Toppositie" placement alongside results', async () => {
         await expect(
           results.topPositionSection,
           'Toppositie section should be visible',
@@ -96,10 +88,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
         ).toBeVisible();
       });
 
-      test('Should load a different set of results on the next page', async ({ searchResults }) => {
-        const results = searchResults(searchOption);
-        await results.openSearchListResults(place);
-
+      test('Should load a different set of results on the next page', async () => {
         await expect(results.pagination, 'Pagination should be visible').toBeVisible();
 
         const firstPageOfResults = await results.getResultAddresses();
@@ -116,13 +105,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
         ).not.toEqual(firstPageOfResults);
       });
 
-      test('Should open a listing detail page when a result is clicked', async ({
-        searchResults,
-        page,
-      }) => {
-        const results = searchResults(searchOption);
-        await results.openSearchListResults(place);
-
+      test('Should open a listing detail page when a result is clicked', async ({ page }) => {
         await results.resultAddresses.first().click();
 
         await expect(

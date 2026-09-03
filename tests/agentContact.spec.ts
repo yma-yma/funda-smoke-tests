@@ -1,5 +1,10 @@
 import { expect, test } from '../src/fixture/base';
-import { SEARCH_SCENARIOS, VIEWING_DAYPARTS, VIEWING_DAYS, type ListingCardContent } from '../src/pages/types';
+import {
+  SEARCH_SCENARIOS,
+  VIEWING_DAYPARTS,
+  VIEWING_DAYS,
+  type ListingCardContent,
+} from '../src/pages/types';
 import type { ListingDetailPage } from '../src/pages/listingDetailPage';
 import { getPriceAmount } from '../src/utils';
 
@@ -67,9 +72,9 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
           'Summary should show the same postal code and city',
         ).toContainText(card.postalCodeAndCity);
         await expect(
-        agentContact.listingSummary,
-        'Summary should show the same price',
-      ).toContainText(getPriceAmount(card.price));
+          agentContact.listingSummary,
+          'Summary should show the same price',
+        ).toContainText(getPriceAmount(card.price));
         await expect(
           agentContact.listingLink,
           'Summary should link back to the listing',
@@ -114,13 +119,12 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
         await expect(agentContact.form.submitButton, 'Submit should be enabled').toBeEnabled();
       });
 
-      test(`Should ${mode.hasViewingPreferences ? 'offer' : 'not offer'} viewing preferences`, async ({
-        listingDetail,
-        agentContact,
-      }) => {
+      test(`Should ${
+        mode.hasViewingPreferences ? 'offer' : 'not offer'
+      } viewing preferences`, async ({ listingDetail, agentContact }) => {
         await mode.openFrom(listingDetail);
 
-          if (mode.hasViewingPreferences) {
+        if (mode.hasViewingPreferences) {
           await expect(
             agentContact.form.viewingRequestCheckbox,
             'Arriving through "request a viewing" should pre-select the viewing request',

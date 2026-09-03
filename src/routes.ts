@@ -1,4 +1,4 @@
-import { SearchType } from "./pages/types";
+import type { SearchType } from './pages/types';
 
 export const ROUTES = {
   main: '/',
@@ -8,5 +8,5 @@ export const ROUTES = {
   searchMap: (type: SearchType, place: string) =>
     `/zoeken/kaart/${type}?selected_area=${encodeURIComponent(place)}`,
 } as const;
-export { SearchType };
 
+export type { SearchType };

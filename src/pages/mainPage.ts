@@ -1,6 +1,7 @@
 import { test, type Locator, type Page } from '@playwright/test';
 import { ROUTES } from '../routes';
-import { searchTab, SEARCH_TAB_IDS, FeaturedListing,  } from './types';
+import { SEARCH_TAB_IDS } from './types';
+import type { FeaturedListing, SearchTab } from './types';
 
 export class HomePage {
   private readonly page: Page;
@@ -16,12 +17,14 @@ export class HomePage {
   readonly featuredListingCards: Locator;
   readonly featuredListingLinks: Locator;
 
-   constructor(page: Page) {
+  constructor(page: Page) {
     this.page = page;
     this.main = this.page.locator('#main-content');
     this.searchInput = this.page.getByTestId('search-box');
     this.mapSearchLink = this.main.locator('a[href*="/zoeken/kaart/"]');
-    this.entryPointsSection = this.main.locator('section').filter({ has: this.page.locator('a[href$="/makelaar-zoeken"]') });
+    this.entryPointsSection = this.main
+      .locator('section')
+      .filter({ has: this.page.locator('a[href$="/makelaar-zoeken"]') });
     this.businessPortalLink = this.entryPointsSection.locator('a[href*="fundainbusiness"]');
     this.agentSearchLink = this.entryPointsSection.locator('a[href$="/makelaar-zoeken"]');
     this.housingMarketInfoLink = this.entryPointsSection.locator('a[href$="/meer-weten"]');
@@ -31,7 +34,7 @@ export class HomePage {
     this.featuredListingLinks = this.featuredSection.locator('a[href*="/detail/"]');
   }
 
-  searchTab(tab: searchTab): Locator {
+  searchTab(tab: SearchTab): Locator {
     return this.main.locator(`[role="tab"][id$="-trigger-${SEARCH_TAB_IDS[tab]}"]`);
   }
 
@@ -41,7 +44,7 @@ export class HomePage {
     });
   }
 
-  async selectSearchTab(tab: searchTab): Promise<void> {
+  async selectSearchTab(tab: SearchTab): Promise<void> {
     await test.step(`Select search tab ${tab}`, async () => {
       await this.searchTab(tab).click();
     });

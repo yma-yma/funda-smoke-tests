@@ -38,13 +38,17 @@ export class AgentContactForm {
     this.submitButton = root.locator('button[type="submit"]');
   }
 
-  /** Intentionally not implemented: submitting sends a real request to an
-   *  estate agent. Throws error rather than doing nothing, so it can never pass
-   *  silently. */
+  /**
+   * Intentionally not implemented: submitting sends a real request to an estate
+   * agent. Throws error rather than doing nothing, so it can never pass
+   * silently.
+   */
   async clickSubmit(): Promise<never> {
     return await test.step('Submit the enquiry form to the estate agent', async () => {
       // originally should be await this.submitButton.click();
-      throw new Error('Not implemented on purpose — see the skipped test in agentContact.spec.ts.');
+      throw new Error(
+        'Not implemented on purpose — see the skipped test in agentContact.spec.ts.',
+      );
     });
   }
 

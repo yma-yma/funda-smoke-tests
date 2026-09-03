@@ -45,13 +45,21 @@ export class ListingDetailPage {
     this.mapLink = this.about.locator('a[href$="/kaart"]');
     this.media = this.page.locator('#media');
     this.mediaNav = this.media.locator('ul').filter({ has: this.page.getByTestId('photos') });
-    this.description = this.page.locator('section:has([data-testid="expandable-panel-header"]):not(#features)');
+    this.description = this.page.locator(
+      'section:has([data-testid="expandable-panel-header"]):not(#features)',
+    );
     this.descriptionText = this.description.getByTestId('expandable-panel-header');
     this.features = this.page.locator('#features');
-    this.similarListingsHeading = this.page.getByRole('heading', { name: 'Vergelijkbaar in de buurt' });
-    this.similarListingsCarousel = this.page.locator('swiper-container').filter({ has: this.page.getByTestId('listing-card') });
+    this.similarListingsHeading = this.page.getByRole('heading', {
+      name: 'Vergelijkbaar in de buurt',
+    });
+    this.similarListingsCarousel = this.page
+      .locator('swiper-container')
+      .filter({ has: this.page.getByTestId('listing-card') });
     this.similarListingCards = this.similarListingsCarousel.getByTestId('listing-card');
-    this.agent = new AgentSection(this.page.locator('div:has(> section):has(> div > div > h3 > a[href*="/makelaar/"])'));
+    this.agent = new AgentSection(
+      this.page.locator('div:has(> section):has(> div > div > h3 > a[href*="/makelaar/"])'),
+    );
   }
 
   getListingBaseParameter(label: string): Locator {

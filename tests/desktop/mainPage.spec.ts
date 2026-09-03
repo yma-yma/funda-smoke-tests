@@ -1,6 +1,6 @@
 import { expect, test } from '../../src/fixture/base';
 import { ROUTES } from '../../src/routes';
-import { FEATURED_LISTING_COUNT } from '../../src/pages/types';
+import { FEATURED_LISTING_COUNT, SEARCH_SCENARIOS } from '../../src/pages/types';
 
 test.describe('Main page', () => {
   test.beforeEach(async ({ home }) => {
@@ -11,25 +11,20 @@ test.describe('Main page', () => {
     await expect(page).toHaveScreenshot({
       animations: 'disabled',
       mask: [page.locator('[role="complementary"]')],
-      // maxDiffPixelRatio: 0.02,
     });
   });
 
-  const SEARCH_QUERIES = [
-    { label: 'city name', query: 'Amsterdam' },
-    { label: 'zip code', query: '1025VB' },
-  ];
 
-  for (const { label, query } of SEARCH_QUERIES) {
-    test(`Searching by ${label} ${query} should open the search results`, async ({
+  for (const { searchOption, place } of SEARCH_SCENARIOS) {
+    test(`Searching by ${searchOption} ${place} should open the search results`, async ({
       home,
       page,
     }) => {
-      await home.searchByPlace(query);
+      await home.searchByPlace(place);
 
       await expect(
         page,
-        `Searching by ${label} ${query} should navigate to search results`,
+        `Searching by ${searchOption} ${place} should navigate to search results`,
       ).toHaveURL(/\/zoeken\//);
     });
   }
@@ -50,6 +45,7 @@ test.describe('Main page', () => {
       page,
       'Agent search link should navigate to the agent search',
     ).toHaveURL(new RegExp(`${ROUTES.agentSearch}/?$`));
+    await expect(page).toHaveScreenshot();
   });
 
   test('By clicking the business portal link should open the business portal in a new tab', async ({
@@ -63,6 +59,7 @@ test.describe('Main page', () => {
       buisnessPortal,
       'Business portal should be opened in new tab on fundainbusiness.nl',
     ).toHaveURL(/fundainbusiness/);
+    await expect(page).toHaveScreenshot();
   });
 
   test.describe('Featured homes section', () => {

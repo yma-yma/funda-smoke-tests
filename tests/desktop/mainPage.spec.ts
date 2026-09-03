@@ -1,6 +1,6 @@
-import { expect, test } from '../src/fixture/base';
-import { ROUTES } from '../src/routes';
-import { FEATURED_LISTING_COUNT } from '../src/pages/types';
+import { expect, test } from '../../src/fixture/base';
+import { ROUTES } from '../../src/routes';
+import { FEATURED_LISTING_COUNT } from '../../src/pages/types';
 
 test.describe('Main page', () => {
   test.beforeEach(async ({ home }) => {

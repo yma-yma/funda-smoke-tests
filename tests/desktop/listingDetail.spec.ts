@@ -1,8 +1,8 @@
-import { expect, test } from '../src/fixture/base';
-import { SEARCH_SCENARIOS } from '../src/pages/types';
-import type { FeatureCategory } from '../src/pages/listingDetailPage';
-import type { SearchResultsPage } from '../src/pages/searchResultsPage';
-import { getPriceAmount } from '../src/utils';
+import { expect, test } from '../../src/fixture/base';
+import { SEARCH_SCENARIOS } from '../../src/pages/types';
+import type { FeatureCategory } from '../../src/pages/listingDetailPage';
+import type { SearchResultsPage } from '../../src/pages/searchResultsPage';
+import { getPriceAmount } from '../../src/utils';
 
 const CORE_FEATURE_CATEGORIES: FeatureCategory[] = [
   'overdracht',

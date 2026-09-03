@@ -1,12 +1,12 @@
-import { expect, test } from '../src/fixture/base';
+import { expect, test } from '../../src/fixture/base';
 import {
   SEARCH_SCENARIOS,
   VIEWING_DAYPARTS,
   VIEWING_DAYS,
   type ListingCardContent,
-} from '../src/pages/types';
-import type { ListingDetailPage } from '../src/pages/listingDetailPage';
-import { getPriceAmount } from '../src/utils';
+} from '../../src/pages/types';
+import type { ListingDetailPage } from '../../src/pages/listingDetailPage';
+import { getPriceAmount } from '../../src/utils';
 
 const CONTACT_MODES = [
   {

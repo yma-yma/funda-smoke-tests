@@ -1,6 +1,6 @@
-import { expect, test } from '../src/fixture/base';
-import { SEARCH_SCENARIOS } from '../src/pages/types';
-import type { SearchResultsPage } from '../src/pages/searchResultsPage';
+import { expect, test } from '../../src/fixture/base';
+import { SEARCH_SCENARIOS } from '../../src/pages/types';
+import type { SearchResultsPage } from '../../src/pages/searchResultsPage';
 
 const COMBINED_LISTING_SEGMENT = 'koophuur';
 

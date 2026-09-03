@@ -1,6 +1,6 @@
-import { expect, test } from '../src/fixture/base';
-import { SEARCH_SCENARIOS, type ListingCardContent } from '../src/pages/types';
-import { agentProfileId } from '../src/utils';
+import { expect, test } from '../../src/fixture/base';
+import { SEARCH_SCENARIOS, type ListingCardContent } from '../../src/pages/types';
+import { agentProfileId } from '../../src/utils';
 
 for (const { searchOption, place } of SEARCH_SCENARIOS) {
   test.describe(`Estate agent section ${searchOption}`, () => {

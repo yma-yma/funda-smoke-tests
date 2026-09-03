@@ -1,5 +1,5 @@
-import { expect, test } from '../src/fixture/base';
-import { parsePriceAmount } from '../src/utils';
+import { expect, test } from '../../src/fixture/base';
+import { parsePriceAmount } from '../../src/utils';
 
 const SEARCH_TYPE = 'koop';
 const SEARCH_AREA = 'amsterdam';

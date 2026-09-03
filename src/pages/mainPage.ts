@@ -34,7 +34,7 @@ export class HomePage {
     this.featuredListingLinks = this.featuredSection.locator('a[href*="/detail/"]');
   }
 
-  searchTab(tab: SearchTab): Locator {
+  getSearchTab(tab: SearchTab): Locator {
     return this.main.locator(`[role="tab"][id$="-trigger-${SEARCH_TAB_IDS[tab]}"]`);
   }
 
@@ -46,7 +46,7 @@ export class HomePage {
 
   async selectSearchTab(tab: SearchTab): Promise<void> {
     await test.step(`Select search tab ${tab}`, async () => {
-      await this.searchTab(tab).click();
+      await this.getSearchTab(tab).click();
     });
   }
 

@@ -13,3 +13,8 @@ export function agentProfileId(href: string | null): string | null {
 export function getPriceAmount(price: string): string {
   return price.match(/[\d.]+/)?.[0] ?? '';
 }
+
+/** Convert price to a number, for ex. "€ 3.500" becomes 3500 */
+export function parsePriceAmount(price: string): number {
+  return Number(getPriceAmount(price).replace(/\./g, ''));
+}

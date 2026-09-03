@@ -1,6 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { ROUTES } from '../routes';
 import type { ListingCardContent, SearchType } from './types';
+import { SearchFilters } from '../components/searchFilters';
 
 const RESULT_ADDRESS_TEST_ID = 'listingDetailsAddress';
 const AGENT_LINK_SELECTOR = 'a.link[href^="/makelaar/"]';
@@ -28,6 +29,7 @@ export class SearchResultsPage {
   readonly resultCards: Locator;
   readonly resultAddresses: Locator;
   readonly agentCards: Locator;
+  readonly filters: SearchFilters;
 
   constructor(page: Page, searchOption: SearchType) {
     this.page = page;
@@ -50,6 +52,7 @@ export class SearchResultsPage {
     );
     this.resultAddresses = this.results.getByTestId(RESULT_ADDRESS_TEST_ID);
     this.agentCards = this.results.getByTestId('agent-card');
+    this.filters = new SearchFilters(this.page);
   }
 
   async openSearchListResults(place: string): Promise<void> {
@@ -116,6 +119,13 @@ export class SearchResultsPage {
     await test.step(`Open the listing at position ${index}`, async () => {
       await this.resultCards.nth(index).getByTestId(RESULT_ADDRESS_TEST_ID).click();
       await this.page.waitForURL(/\/detail\//);
+    });
+  }
+
+  async openFilters(): Promise<void> {
+    await test.step('Open the filter panel', async () => {
+      await this.filtersButton.click();
+      await this.filters.panel.waitFor();
     });
   }
 }

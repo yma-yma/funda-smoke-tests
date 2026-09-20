@@ -30,23 +30,27 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
     });
 
     test('Should render the agency branding and both profile links', async ({ listingDetail }) => {
-      await expect(listingDetail.agent.logo, 'Agency logo should be visible').toBeVisible();
-      await expect(
-        listingDetail.agent.logo,
-        'Agency logo should have a source',
-      ).toHaveAttribute('src', /\S/);
-
       const profileId = await listingDetail.agent.getProfileId();
       expect(profileId, 'Agency name should link to an agent profile').not.toBeNull();
-      await expect(
-        listingDetail.agent.logoLink,
-        'Logo should link to the same profile as the agency name',
-      ).toHaveAttribute('href', new RegExp(`/makelaar/${profileId}$`));
-
       await expect(
         listingDetail.agent.profileLink,
         'Agency name should be rendered',
       ).toHaveText(/\S/);
+
+      // The agency logo is optional, so only assert it if it is present 
+      // If it is present, it should be visible and link to the same profile as the agency name.
+      if ((await listingDetail.agent.logoLink.count()) > 0) {
+        await expect(listingDetail.agent.logo, 'Agency logo should be visible').toBeVisible();
+        const logoLoaded = await listingDetail.agent.logo.evaluate(
+          (image: HTMLImageElement) => image.complete && image.naturalWidth > 0,
+        );
+        expect(logoLoaded, 'Agency logo should load').toBe(true);
+
+        await expect(
+          listingDetail.agent.logoLink,
+          'Logo should link to the same profile as the agency name',
+        ).toHaveAttribute('href', new RegExp(`/makelaar/${profileId}$`));
+      }
     });
 
     test('Should reveal the agent phone number on request', async ({ listingDetail }) => {

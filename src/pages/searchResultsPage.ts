@@ -2,13 +2,10 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { ROUTES } from '../routes';
 import type { ListingCardContent, SearchType } from './types';
 import { SearchFilters } from '../components/searchFilters';
+import { PRICE_SUFFIX } from '../utils';
 
 const RESULT_ADDRESS_TEST_ID = 'listingDetailsAddress';
-const AGENT_LINK_SELECTOR = 'a.link[href^="/makelaar/"]';
-const PRICE_SUFFIX: Record<SearchType, RegExp> = {
-  koop: /k\.k\.|v\.o\.n\./,
-  huur: /p\.m\.|per maand/,
-};
+const AGENT_LINK_SELECTOR = 'a[href^="/makelaar/"]';
 
 export class SearchResultsPage {
   private readonly page: Page;
@@ -47,9 +44,7 @@ export class SearchResultsPage {
     this.topPositionSection = this.results.getByTestId('top-position-wrapper');
     this.topPositionCards = this.results.getByTestId('top-position-listing');
     this.resultCount = this.pageHeader.locator('div').first();
-    this.resultCards = this.results.locator(
-      `div:has(> h2 > a[data-testid="${RESULT_ADDRESS_TEST_ID}"])`,
-    );
+    this.resultCards = this.results.locator('div.rounded-lg.bg-secondary-10.p-4');
     this.resultAddresses = this.results.getByTestId(RESULT_ADDRESS_TEST_ID);
     this.agentCards = this.results.getByTestId('agent-card');
     this.filters = new SearchFilters(this.page);
@@ -81,7 +76,8 @@ export class SearchResultsPage {
     return Promise.all(
       cards.map(async (card) => {
         const address = card.getByTestId(RESULT_ADDRESS_TEST_ID);
-        const agentLink = card.locator(AGENT_LINK_SELECTOR);
+        // Only the link carrying the agency name has text; the other is icon-only.
+        const agentLink = card.locator(AGENT_LINK_SELECTOR).filter({ hasText: /\S/ });
         const prices = await card.getByText(/€/).allInnerTexts();
         const price =
           prices.find((value) => PRICE_SUFFIX[this.searchOption].test(value)) ?? prices[0] ?? '';

@@ -1,6 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
 import { AgentSection } from '../components/agentSection';
-import { getPriceAmount } from '../utils';
+import { getPriceAmount, PRICE_SUFFIX } from '../utils';
+import type { SearchType } from './types';
 
 export const FEATURE_CATEGORIES = [
   'overdracht',
@@ -22,7 +23,9 @@ export class ListingDetailPage {
   readonly about: Locator;
   readonly heading: Locator;
   readonly addressData: Locator;
-  readonly price: Locator;
+  /** Every price in the header. A property offered for sale and for rent at the
+   *  same time shows two, so the one that matters depends on what was searched. */
+  readonly prices: Locator;
   readonly listingBaseInfo: Locator;
   readonly mapLink: Locator;
   readonly media: Locator;
@@ -40,7 +43,7 @@ export class ListingDetailPage {
     this.about = this.page.locator('#about');
     this.heading = this.about.locator('h1[data-global-id]');
     this.addressData = this.about.locator('div[postcode][city][housenumber]');
-    this.price = this.about.getByText(/^€/);
+    this.prices = this.about.getByText(/^€/);
     this.listingBaseInfo = this.about.locator('ul');
     this.mapLink = this.about.locator('a[href$="/kaart"]');
     this.media = this.page.locator('#media');
@@ -74,8 +77,12 @@ export class ListingDetailPage {
     return this.features.getByTestId(`category-${category}`);
   }
 
-  async getPriceAmount(): Promise<string> {
-    return getPriceAmount((await this.price.innerText()).trim());
+  getPrice(searchOption: SearchType): Locator {
+    return this.prices.filter({ hasText: PRICE_SUFFIX[searchOption] });
+  }
+
+  async getPriceAmount(searchOption: SearchType): Promise<string> {
+    return getPriceAmount((await this.getPrice(searchOption).innerText()).trim());
   }
 
   async getGlobalId(): Promise<string | null> {

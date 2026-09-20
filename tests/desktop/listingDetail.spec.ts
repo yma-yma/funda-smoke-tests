@@ -41,7 +41,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
 
       expect(cardPriceAmount, 'The result card should show a price amount').not.toBe('');
       expect(
-        await listingDetail.getPriceAmount(),
+        await listingDetail.getPriceAmount(searchOption),
         'The price on the listing page should match the price on the result card',
       ).toBe(cardPriceAmount);
     });
@@ -67,7 +67,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
       ).toHaveAttribute('housenumber', /\S/);
 
       await expect(
-        listingDetail.price,
+        listingDetail.getPrice(searchOption),
         'The price should be an amount in euros',
       ).toHaveText(/^€\s?[\d.]+/);
 
@@ -115,7 +115,7 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
         ).toBeVisible();
       }
 
-      const amount = await listingDetail.getPriceAmount();
+      const amount = await listingDetail.getPriceAmount(searchOption);
       await expect(
         listingDetail.getFeatureCategory('overdracht'),
         'The price listed under "Overdracht" should match the price in the header',

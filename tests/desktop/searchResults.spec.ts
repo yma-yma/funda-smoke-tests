@@ -88,7 +88,12 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
         ).toBeVisible();
       });
 
-      test('Should load a different set of results on the next page', async () => {
+      /* Skipped: Funda's September 2026 search page redesign removed the
+         pagination control from the results page — there is no "Volgende" link
+         or load-more button left to drive. The `search_result` query parameter
+         still returns a different page of results, so the capability exists
+         server-side; what replaced the control in the UI needs a look. */
+      test.skip('Should load a different set of results on the next page', async () => {
         await expect(results.pagination, 'Pagination should be visible').toBeVisible();
 
         const firstPageOfResults = await results.getResultAddresses();

@@ -1,3 +1,13 @@
+import type { SearchType } from './pages/types';
+
+
+ //A property can be offered for sale and for rent at the same time, so one card
+ //or one listing page can show two prices
+export const PRICE_SUFFIX: Record<SearchType, RegExp> = {
+  koop: /k\.k\.|v\.o\.n\./,
+  huur: /p\.m\.|per maand|\/mnd/,
+};
+
 export function agentProfileId(href: string | null): string | null {
   return href?.match(/\/makelaar\/(\d+)/)?.[1] ?? null;
 }

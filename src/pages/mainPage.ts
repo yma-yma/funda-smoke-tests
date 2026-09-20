@@ -7,7 +7,6 @@ export class HomePage {
   private readonly page: Page;
   private readonly main: Locator;
   private readonly entryPointsSection: Locator;
-  readonly searchTabsIndicator: Locator;
   readonly searchInput: Locator;
   readonly mapSearchLink: Locator;
   readonly businessPortalLink: Locator;
@@ -33,7 +32,6 @@ export class HomePage {
     this.featuredSection = this.main.locator('section').filter({ has: this.featuredHeading });
     this.featuredListingCards = this.featuredSection.locator('swiper-slide');
     this.featuredListingLinks = this.featuredSection.locator('a[href*="/detail/"]');
-    this.searchTabsIndicator = this.main.locator('[style*="--reka-tabs-indicator-size"]');
   }
 
   getSearchTab(tab: SearchTab): Locator {

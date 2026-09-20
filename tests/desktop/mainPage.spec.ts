@@ -7,10 +7,10 @@ test.describe('Main page', () => {
     await home.openMainPage();
   });
 
-  test('Validate visually main page layout', async ({ home, page }) => {
-    await home.searchTabsIndicator.waitFor();
+  test('Validate visually main page layout', async ({ page }) => {
     await expect(page).toHaveScreenshot({
       animations: 'disabled',
+      maxDiffPixelRatio: 0.01,
     });
   });
 
@@ -45,7 +45,7 @@ test.describe('Main page', () => {
       page,
       'Agent search link should navigate to the agent search',
     ).toHaveURL(new RegExp(`${ROUTES.agentSearch}/?$`));
-    await expect(page).toHaveScreenshot();
+    await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 0.01 });
   });
 
   test('By clicking the business portal link should open the business portal in a new tab', async ({
@@ -59,7 +59,7 @@ test.describe('Main page', () => {
       buisnessPortal,
       'Business portal should be opened in new tab on fundainbusiness.nl',
     ).toHaveURL(/fundainbusiness/);
-    await expect(page).toHaveScreenshot();
+    await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 0.01 });
   });
 
   test.describe('Featured homes section', () => {

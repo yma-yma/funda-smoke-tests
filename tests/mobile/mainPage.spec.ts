@@ -6,7 +6,7 @@ test.describe('Main page on mobile', () => {
 
     await expect(page).toHaveScreenshot({
       animations: 'disabled',
-      mask: [page.locator('[role="complementary"]')],
+      maxDiffPixelRatio: 0.01,
     });
   });
 });

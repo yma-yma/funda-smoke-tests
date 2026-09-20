@@ -7,10 +7,10 @@ test.describe('Main page', () => {
     await home.openMainPage();
   });
 
-  test('Validate visually main page layout', async ({ page }) => {
+  test('Validate visually main page layout', async ({ home, page }) => {
+    await home.searchTabsIndicator.waitFor();
     await expect(page).toHaveScreenshot({
       animations: 'disabled',
-      mask: [page.locator('[role="complementary"]')],
     });
   });
 

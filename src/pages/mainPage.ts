@@ -1,4 +1,4 @@
-import { test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { ROUTES } from '../routes';
 import { SEARCH_TAB_IDS } from './types';
 import type { FeaturedListing, SearchTab } from './types';
@@ -7,6 +7,7 @@ export class HomePage {
   private readonly page: Page;
   private readonly main: Locator;
   private readonly entryPointsSection: Locator;
+  readonly searchTabsIndicator: Locator;
   readonly searchInput: Locator;
   readonly mapSearchLink: Locator;
   readonly businessPortalLink: Locator;
@@ -32,6 +33,7 @@ export class HomePage {
     this.featuredSection = this.main.locator('section').filter({ has: this.featuredHeading });
     this.featuredListingCards = this.featuredSection.locator('swiper-slide');
     this.featuredListingLinks = this.featuredSection.locator('a[href*="/detail/"]');
+    this.searchTabsIndicator = this.main.locator('[style*="--reka-tabs-indicator-size"]');
   }
 
   getSearchTab(tab: SearchTab): Locator {

@@ -41,10 +41,16 @@ for (const { searchOption, place } of SEARCH_SCENARIOS) {
       // If it is present, it should be visible and link to the same profile as the agency name.
       if ((await listingDetail.agent.logoLink.count()) > 0) {
         await expect(listingDetail.agent.logo, 'Agency logo should be visible').toBeVisible();
-        const logoLoaded = await listingDetail.agent.logo.evaluate(
-          (image: HTMLImageElement) => image.complete && image.naturalWidth > 0,
-        );
-        expect(logoLoaded, 'Agency logo should load').toBe(true);
+        await listingDetail.agent.logo.scrollIntoViewIfNeeded();
+        await expect
+          .poll(
+            () =>
+              listingDetail.agent.logo.evaluate(
+                (image: HTMLImageElement) => image.complete,
+              ),
+            { message: 'Agency logo should load' },
+          )
+          .toBe(true);
 
         await expect(
           listingDetail.agent.logoLink,

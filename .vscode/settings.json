@@ -1,0 +1,7 @@
+{
+  // "Show browser" in the Testing sidebar: runs headed and keeps one window
+  // open between runs instead of launching a fresh headless browser each time.
+  "playwright.reuseBrowser": true,
+  // Opens the trace for a run so failing steps can be stepped through.
+  "playwright.showTrace": false
+}
